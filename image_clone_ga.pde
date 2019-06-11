@@ -1,24 +1,34 @@
 DNA dna;
+int w;
+int h;
 PImage image;
+Population pop;
 void setup() {
   fullScreen();
 
   image = loadImage("/home/cornoblue/Pictures/b.jpeg");
-  image.resize(200, 200);
-  dna = new DNA(image.width, image.height);
+  image.resize(150, 150);
+  w = image.width;
+  h = image.height;
+  int size = (width/w) * (height/h);
+  pop = new Population(size);
 }
 
 void draw() {
   background(0);
   image(image, 0, 0) ;
-  dna.show(image.width, 0);
   text(frameRate, width/2, height/2);
-  text(dna.error, width/2, height/2+10);
-  
+  int index = 0;
+  //translate(0, 200);
+  for (int x : range(0, width, w)) {
+    for (int y : range(0, height, h)) {
+      if (index > 0) {
+        pop.dnas[index].show(x, y);
+      }
+      index++;
+    }
+  }
 }
 
-void keyPressed() {
-  dna.mutate(0.01);
-  dna.calcErr(image);
-  println(dna.error);
+void keyPressed(){
 }
