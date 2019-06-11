@@ -10,7 +10,7 @@ class Gene {
 
   void paint(PGraphics canvas) {
     canvas.fill(c);
-    canvas.rect(x, y, 1, 1);
+    canvas.rect(x, y, 1.5, 1.5);
   }
 
   void reInit(float w, float h) {
@@ -51,26 +51,32 @@ class DNA {
     target.loadPixels();
     canvas.loadPixels();
     error = 0f;
+    float rErr;
+    float gErr;
+    float bErr;
+    float meanErr;
     for (int i : range(target.pixels.length)) {
-      float rErr = abs(red(target.pixels[i]) - red(canvas.pixels[i])); 
-      float gErr = abs(red(target.pixels[i]) - red(canvas.pixels[i])); 
-      float bErr = abs(red(target.pixels[i]) - red(canvas.pixels[i])); 
-      float meanErr = (rErr + gErr + bErr) / 3;
+      rErr = abs(red(target.pixels[i]) - red(canvas.pixels[i])); 
+      gErr = abs(green(target.pixels[i]) - green(canvas.pixels[i])); 
+      bErr = abs(blue(target.pixels[i]) - blue(canvas.pixels[i])); 
+      meanErr = (rErr + gErr + bErr) / 3;
       error += meanErr;
     }
   }
 
-  void mutate() {
+  void mutate(float mutationRate) {
     for (Gene g : genes) {
-      g.reInit(w, h);
+      if (random(1) < mutationRate) {
+        g.reInit(w, h);
+      }
     }
     updateCanvas();
   }
 
   void updateCanvas() {
-    canvas.beginDraw();
+    canvas.beginDraw(); 
     canvas.clear();
-    for (Gene g: genes) { 
+    for (Gene g : genes) { 
       g.paint(canvas);
     }
     canvas.endDraw();
