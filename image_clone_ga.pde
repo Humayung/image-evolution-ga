@@ -12,6 +12,8 @@ void setup() {
   h = image.height;
   int size = (width/w) * (height/h);
   pop = new Population(size);
+  println("Best: " + pop.bestDna().error);
+  println("Worse: " + pop.worseDna().error);
 }
 
 void draw() {
@@ -28,7 +30,4 @@ void draw() {
       index++;
     }
   }
-}
-
-void keyPressed(){
 }

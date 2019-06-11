@@ -1,13 +1,10 @@
 class DNA {
   final int length = 6000;
-  float error;
-  float w, h;
+  long error;
   Gene[] genes = new Gene[length];
   PGraphics canvas;
 
-  DNA(int w, int h) {
-    this.w = w;
-    this.h = h;
+  DNA() {
     canvas = createGraphics(w, h);
     canvas.beginDraw();
     canvas.noStroke();
@@ -20,6 +17,15 @@ class DNA {
     }
     canvas.endDraw();
   }
+  
+  DNA(DNA clone) {
+    this.genes = clone.genes.clone();   
+    this.error = clone.error;
+    canvas = createGraphics(w, h);
+    canvas.noStroke();
+    canvas.rectMode(CENTER);
+    updateCanvas();
+  }
 
   void show(float tx, float ty) {
     image(canvas, tx, ty);
@@ -28,7 +34,7 @@ class DNA {
   void calcErr(PImage target) {
     target.loadPixels();
     canvas.loadPixels();
-    error = 0f;
+    error = 0;
     float rErr;
     float gErr;
     float bErr;
@@ -58,5 +64,9 @@ class DNA {
       g.paint(canvas);
     }
     canvas.endDraw();
+  }
+  
+  DNA clone(){
+    return new DNA(this);
   }
 }
