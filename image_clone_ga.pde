@@ -30,6 +30,7 @@ void draw() {
   }
   if (gen % 5 ==0) {
     show();
+    pop.bestEverDNA.canvas.save("best.png");
   }
 
   //println(pop.bestEver + " - " + gen + " - " + pop.mean());
