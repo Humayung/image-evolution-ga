@@ -51,7 +51,7 @@ class Gene {
       data[1] = constrain(data[1] + randomGaussian() * 5, 0, size[1]);
       break;
     case  2:
-      data[2] = constrain(data[2] + randomGaussian() * 2, 1, 30);
+      data[2] = constrain(data[2] + randomGaussian() * 2, 1, 20);
       break;
     }
     int red = floor(constrain(red(floor(data[3])) + randomGaussian() * 3, 0, 255));
@@ -60,8 +60,8 @@ class Gene {
     data[3] = color(red, green, blue);
 
     for (Vertex v : vertices) {
-      v.x += randomGaussian() * 5;
-      v.y += randomGaussian() * 5;
+      v.x = constrain(randomGaussian() * 3, -data[2], data[2]);
+      v.y = constrain(randomGaussian() * 3, -data[2], data[2]);
     }
 
     if (vertices.size() < MAX_VERT && random(1) < ADD_VERT_CHANCE) {

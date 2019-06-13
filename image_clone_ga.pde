@@ -1,21 +1,24 @@
 DNA dna;
-PImage image;
+//PImage image;
 //PGraphics image;
 int popSize = 100;
 int[] size = new int[2];
-//PGraphics image;
+PGraphics image;
 Population pop;
 void setup() {
   //textSize(20);
   fullScreen();
 
-  image = loadImage("/home/cornoblue/Pictures/reference.png");
-  image.resize(100, 100);
+  //image = loadImage("/home/cornoblue/Pictures/reference.png");
+  //image.resize(100, 100);
   //image.resize(image.width/3, image.height/3);
-  //image = createGraphics(100, 100);
-  //image.beginDraw();
-  //image.background(0);
-  //image.endDraw();
+  image = createGraphics(100, 100);
+  image.beginDraw();
+  image.noStroke();
+  image.background(255);
+  image.fill(255, 100, 50);
+  image.ellipse(50, 50, 50, 50);
+  image.endDraw();
   size[0] = image.width;
   size[1] = image.height;
   pop = new Population(popSize);
