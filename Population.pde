@@ -1,44 +1,71 @@
 class Population {
+  float bestEver = Float.POSITIVE_INFINITY;
+  final float MUTATION_RATE = 0.02;
+  DNA bestEverDNA = null;
+  long total = 0;
   DNA[] dnas; 
+  int popSize;
   Population(int size) {
-    dnas = new DNA[size];
-    for (int i : range(size)) {
+    this.popSize = size;
+    dnas = new DNA[popSize];
+    for (int i : range(popSize)) {
       dnas[i] = new DNA();
     }
   }
 
-  DNA bestDna() {
-    calcErr();
+  void nextGeneration() {
+    DNA parent = bestDna();
+    println("Generation       : " + gen);
+    println("    Error        : " + parent.error);
+    println("    Genes Length : " + parent.genes.size());
+    //println(parent.error);
+    DNA[] newDnas = new DNA[popSize];
+    for(int i : range(popSize)){
+      newDnas[i] = parent.clone();
+      newDnas[i].mutate(MUTATION_RATE);
+    }
+    dnas = newDnas.clone();
+  }
 
-    long minErr = Long.MAX_VALUE;
-    DNA best = null;
+
+  DNA bestDna() {
+    calcError(); 
+    float minError = Float.POSITIVE_INFINITY; 
+    DNA best = null; 
     for (DNA d : dnas) {
-      if (d.error < minErr) {
-        best = d;
-        minErr = best.error;
+      if (d.error < minError) {
+        best = d; 
+        minError = best.error;
       }
     }
-    
+    if (best.error < bestEver) {
+      bestEverDNA = best.clone();
+      bestEver = best.error;
+    }
     return best.clone();
   }
-
-  DNA worseDna() {
-    calcErr();
-
-    long maxErr = 0;
-    DNA worst = null;
+  
+  //DNA bestDna() {
+  //  calcError(); 
+  //  float maxError = 0; 
+  //  DNA best = null; 
+  //  for (DNA d : dnas) {
+  //    if (d.error > maxError) {
+  //      best = d; 
+  //      maxError = best.error;
+  //    }
+  //  }
+  //  if (best.error > bestEver) {
+  //    bestEverDNA = best.clone();
+  //    bestEver = best.error;
+  //  }
+  //  return best.clone();
+  //}
+  
+  
+  void calcError() {
     for (DNA d : dnas) {
-      if (d.error > maxErr) {
-        worst = d;
-        maxErr = worst.error;
-      }
-    }
-    return worst.clone();
-  }
-
-  void calcErr() {
-    for (DNA d : dnas) {
-      d.calcErr(image);
+      d.calcError(image);
     }
   }
 }
