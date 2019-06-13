@@ -118,8 +118,8 @@ class DNA {
 
     Table genesVertices = new Table();  
     for (int i : range(0, 20, 2)) {
-      genesVertices.addColumn("vert" + i/2 +".x");
-      genesVertices.addColumn("vert" + i/2 +".y");
+      genesVertices.addColumn(Integer.toString(i));
+      genesVertices.addColumn(Integer.toString(i+1));
     }
 
     for (int i : range(genes.size())) {
@@ -131,7 +131,7 @@ class DNA {
           currRow.setFloat(j+1, g.vertices.get(j/2).y);
         } else {
           currRow.setFloat(j, 99.0);
-          currRow.setFloat(j+ 1, 99.0);
+          currRow.setFloat(j+1, 99.0);
         }
       }
     }
@@ -149,7 +149,7 @@ class DNA {
     INITIAL_GENES = tr.getInt(1);
 
     genes.clear();
-    Table genesTable = loadTable("Genes.csv");
+    Table genesTable = loadTable("genes.csv");
     for (int i : range(INITIAL_GENES)) {
       TableRow currRow = genesTable.getRow(i);
 
@@ -157,12 +157,24 @@ class DNA {
       for (int j : range(4)) {
         data[j] = currRow.getFloat(j);
       }
+      genes.add(new Gene());
+      genes.get(i).data = data;
+    }
+
+    Table genesVertices = loadTable("genesVertices.csv");
+    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+    for (int i : range(INITIAL_GENES)) {
+      TableRow currRow = genesVertices.getRow(i);
+      for (int j : range(0, 20, 2)) {
+        float x = currRow.getFloat(j);
+        float y = currRow.getFloat(j+1);
+        if (x != -999) {
+          vertices.add(new Vertex(x, y));
+        }
+      }
+      genes.get(i).vertices = vertices;
     }
     
-    Table genesVertices = loadTable("genesVertices.csv");
-    for (int i : range(INITIAL_GENES)) {
-      TableRow currRow = 
-    }
     //ArrayList<Vertex> vertices = new ArrayList<Vertex>();
     //for (int j : range(0, 20, 2)) {
     //  float x = currRow.getFloat(j);

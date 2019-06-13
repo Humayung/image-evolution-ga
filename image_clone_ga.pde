@@ -22,6 +22,7 @@ void setup() {
 }
 
 void draw() {
+
   //println(floor(random(3)));  
   pop.nextGeneration();
   gen++;

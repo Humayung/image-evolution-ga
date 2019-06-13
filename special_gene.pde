@@ -21,8 +21,8 @@ class Gene {
   Gene(float[] data, ArrayList<Vertex> vertices ) {
     this.data = data.clone();
     this.vertices = new ArrayList<Vertex>();
-    for (Vertex g : vertices) {
-      this.vertices.add(g.clone());
+    for (Vertex v : vertices) {
+      this.vertices.add(v.clone());
     }
   }
 
