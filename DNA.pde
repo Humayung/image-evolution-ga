@@ -49,9 +49,8 @@ class DNA {
       rErr = abs(red(target.pixels[i]) - red(canvas.pixels[i]));
       gErr = abs(green(target.pixels[i]) - green(canvas.pixels[i]));
       bErr = abs(blue(target.pixels[i]) - blue(canvas.pixels[i]));
-      error += (rErr + gErr + bErr);
+      error += (rErr + gErr + bErr)/3;
     }
-    //error =
   }
 
   void mutate(float mutationRate) {
@@ -107,36 +106,28 @@ class DNA {
     for (int i : range(4)) {
       genesTable.addColumn(Integer.toString(i));
     }
-
+    for (int i : range(0, 20, 2)) {
+      genesTable.addColumn(Integer.toString(i + 4));
+      genesTable.addColumn(Integer.toString(i+1 + 4));
+    }
     for (int i : range(genes.size())) {
       TableRow currRow = genesTable.addRow();
       for (int j : range(4)) {
         currRow.setFloat(j, genes.get(i).data[j]);
-      }
-    }
-    saveTable(genesTable, "genes.csv");
+      }      
 
-    Table genesVertices = new Table();  
-    for (int i : range(0, 20, 2)) {
-      genesVertices.addColumn(Integer.toString(i));
-      genesVertices.addColumn(Integer.toString(i+1));
-    }
-
-    for (int i : range(genes.size())) {
-      TableRow currRow = genesVertices.addRow();
       for (int j : range(0, 20, 2)) {
         Gene g = genes.get(i);
         if (j/2 < g.vertices.size()) {
-          currRow.setFloat(j, g.vertices.get(j/2).x);
-          currRow.setFloat(j+1, g.vertices.get(j/2).y);
+          currRow.setFloat(j + 4, g.vertices.get(j/2).x);
+          currRow.setFloat(j + 5, g.vertices.get(j/2).y);
         } else {
-          currRow.setFloat(j, 99.0);
-          currRow.setFloat(j+1, 99.0);
+          currRow.setFloat(j + 4, 99.0);
+          currRow.setFloat(j + 5, 99.0);
         }
       }
     }
-
-    saveTable(genesVertices, "genesVertices.csv");
+    saveTable(genesTable, "genes.csv");
   }
 
 
@@ -157,41 +148,17 @@ class DNA {
       for (int j : range(4)) {
         data[j] = currRow.getFloat(j);
       }
-      genes.add(new Gene());
-      genes.get(i).data = data;
-    }
 
-    Table genesVertices = loadTable("genesVertices.csv");
-    ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-    for (int i : range(INITIAL_GENES)) {
-      TableRow currRow = genesVertices.getRow(i);
+      ArrayList<Vertex> vertices = new ArrayList<Vertex>();
       for (int j : range(0, 20, 2)) {
-        float x = currRow.getFloat(j);
-        float y = currRow.getFloat(j+1);
-        if (x != -999) {
+        float x = currRow.getFloat(j + 4);
+        float y = currRow.getFloat(j+ 5);
+        if (int(x) != 99 ) {
           vertices.add(new Vertex(x, y));
         }
       }
-      genes.get(i).vertices = vertices;
+      genes.add(new Gene(data, vertices));
     }
-    
-    //ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-    //for (int j : range(0, 20, 2)) {
-    //  float x = currRow.getFloat(j);
-    //  float y = currRow.getFloat(j);
-    //  if (x != -999) {
-    //    vertices.add(new Vertex(x, y));
-    //  }
-    //}
-    //for(Vertex v : vertices){
-    //  println("x: " + v.x);
-    //  println("  y: " + v.y);
-    //}
-    //exit();
-    //genes.add(new Gene(data, vertices));
-
-
-    //exit();
     updateCanvas();
   }
 

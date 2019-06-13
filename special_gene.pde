@@ -1,12 +1,12 @@
 class Gene {
   ArrayList<Vertex> vertices;
-  final float ADD_VERT_CHANCE = 0.1;
-  final float REM_VERT_CHANCE = 0.1;
+  final float ADD_VERT_CHANCE = 0.2;
+  final float REM_VERT_CHANCE = 0.2;
   final int MAX_VERT = 10;
   float[] data;
   Gene() {
     vertices = new ArrayList<Vertex>();
-    
+
     data = new float[4];
     data[0] = random(size[0]);
     data[1] = random(size[1]);
@@ -33,7 +33,7 @@ class Gene {
     canvas.translate(data[0], data[1]);
     canvas.beginShape();
     canvas.fill(floor(data[3]));
-   
+
     for (Vertex v : vertices) {
       canvas.vertex(v.x, v.y);
     }
@@ -43,15 +43,26 @@ class Gene {
 
   void mutate() {
     int mutateSelect = floor(random(3));
-    data[mutateSelect] += randomGaussian() * 5;
-    int red = floor(constrain(red(floor(data[3])) + randomGaussian() * 4, 0, 255));
-    int green = floor(constrain(green(floor(data[3])) + randomGaussian() * 4, 0, 255));
-    int blue  = floor(constrain(blue(floor(data[3])) + randomGaussian() * 4, 0, 255));
+    switch(mutateSelect) {
+    case  0:
+      data[0] = constrain(data[0] + randomGaussian() * 5, 0, size[0]);
+      break;
+    case  1:
+      data[1] = constrain(data[1] + randomGaussian() * 5, 0, size[1]);
+      break;
+    case  2:
+      data[2] = constrain(data[2] + randomGaussian() * 2, 1, 30);
+      break;
+    }
+    int red = floor(constrain(red(floor(data[3])) + randomGaussian() * 3, 0, 255));
+    int green = floor(constrain(green(floor(data[3])) + randomGaussian() * 3, 0, 255));
+    int blue  = floor(constrain(blue(floor(data[3])) + randomGaussian() * 3, 0, 255));
     data[3] = color(red, green, blue);
 
-    int vertIndex = floor(random(vertices.size()));
-    vertices.get(vertIndex).x += randomGaussian() * 2;
-    vertices.get(vertIndex).y += randomGaussian() * 2;
+    for (Vertex v : vertices) {
+      v.x += randomGaussian() * 5;
+      v.y += randomGaussian() * 5;
+    }
 
     if (vertices.size() < MAX_VERT && random(1) < ADD_VERT_CHANCE) {
       vertices.add(new Vertex(random(-data[2], data[2]), random(-data[2], data[2])));
@@ -63,7 +74,7 @@ class Gene {
     }
   }
 
-  
+
 
   Gene clone() {
     return new Gene(data, vertices);
@@ -71,14 +82,14 @@ class Gene {
 }
 
 class Vertex {
-    float x;
-    float y;
-    Vertex(float x, float y) {
-      this.x = x;
-      this.y = y;
-    }
-    
-    Vertex clone(){
-      return new Vertex(this.x, this.y);
-    }
+  float x;
+  float y;
+  Vertex(float x, float y) {
+    this.x = x;
+    this.y = y;
   }
+
+  Vertex clone() {
+    return new Vertex(this.x, this.y);
+  }
+}

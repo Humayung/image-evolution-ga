@@ -6,11 +6,11 @@ int[] size = new int[2];
 //PGraphics image;
 Population pop;
 void setup() {
-  textSize(20);
+  //textSize(20);
   fullScreen();
 
   image = loadImage("/home/cornoblue/Pictures/reference.png");
-  image.resize(150, 150);
+  image.resize(100, 100);
   //image.resize(image.width/3, image.height/3);
   //image = createGraphics(100, 100);
   //image.beginDraw();
@@ -20,7 +20,6 @@ void setup() {
   size[1] = image.height;
   pop = new Population(popSize);
 }
-
 void draw() {
 
   //println(floor(random(3)));  
@@ -29,11 +28,13 @@ void draw() {
   if (pop.prevScore != pop.bestEver) {
     pop.bestEverDNA.canvas.save("results/best" + gen + ".png");
   }
-  if (gen % 5 ==0) {
+  if (gen % 3 ==0) {
     show();
     pop.bestEverDNA.canvas.save("best.png");
   }
-
+  
+  
+  
   //println(pop.bestEver + " - " + gen + " - " + pop.mean());
 }
 
@@ -50,7 +51,6 @@ void show() {
   for (int x : range(0, width, image.width)) {
     for (int y : range(image.height, height, image.height)) {
       pop.dnas[index].show(x, y);
-
       index++;
     }
   }

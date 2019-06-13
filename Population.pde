@@ -3,6 +3,7 @@ class Population {
   final float MUTATION_RATE = 0.02;
   DNA bestEverDNA = null;
   float prevScore;
+  float bestError;
   long total = 0;
   DNA[] dnas; 
   int popSize;
@@ -18,7 +19,6 @@ class Population {
       createGeneration(parent);
     }
     catch(Exception e) {
-      println("No saveData!");
 
       for (int i : range(popSize)) {
         dnas[i] = new DNA();
@@ -26,10 +26,11 @@ class Population {
     }
   }
 
-
   void nextGeneration() {
     DNA parent = bestDna();
-    parent.saveDNA();
+    if (gen % 5 == 0) {
+      parent.saveDNA();
+    }
     println("Generation       : " + gen);
     println("    Error        : " + parent.error);
     println("    Genes Length : " + parent.genes.size());
@@ -60,8 +61,10 @@ class Population {
       if (d.error < minError) {
         best = d; 
         minError = best.error;
+        
       }
     }
+    bestError = best.error;
     if (best.error < bestEver) {
       bestEverDNA = best.clone();
       prevScore = bestEver;
