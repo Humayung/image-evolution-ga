@@ -51,6 +51,7 @@ class DNA {
       bErr = abs(blue(target.pixels[i]) - blue(canvas.pixels[i]));
       error += (rErr + gErr + bErr);
     }
+    //error =
   }
 
   void mutate(float mutationRate) {
@@ -60,6 +61,16 @@ class DNA {
         g.mutate();
       }
     }
+    //}else{
+    //  ArrayList<Gene> mutant = new ArrayList<Gene>();
+    //  for(int i : range(mutationRate * genes.size())){
+    //    mutant.add(genes.get(floor(random(genes.size()))));
+    //  }
+
+    //  for(Gene g : mutant){
+    //    g.mutate(size);
+    //  }
+    //}
     if (random(1) < ADD_GENE_CHANCE) {
       genes.add(new Gene());
     }
@@ -81,87 +92,33 @@ class DNA {
 
   void saveDNA() {
     Table genesTable = new Table();
-    genesTable.addColumn("x");
-    genesTable.addColumn("y");
-    genesTable.addColumn("d");
-    genesTable.addColumn("c");
     
-    final int MAX_VERT = 10;
-    for (int i : range(4, 25)) {
-      genesTable.addColumn("vert" + (i - 4));
-    }
+    Table infoTable = new Table();
+    infoTable.addColumn("Gen");
+    infoTable.addColumn("Genes Length");
+    TableRow tr;
+    tr = infoTable.addRow();
+    tr.setInt(0, gen);
+    tr.setInt(1, genes.size());
 
-    for (int i : range(genes.size())) {
-      TableRow tr = genesTable.addRow();
-      
-      for (int j : range(4)) {
-        tr.setFloat(j, genes.get(i).data[j]);
-      }
-      
-      for (int j : range(MAX_VERT* 2)) {
-        Gene g = genes.get(i);
-        if (j/2 < g.vertices.size()) {
-          tr.setFloat(j + 4, g.vertices.get(j/2).x);
-          tr.setFloat(j + 5, g.vertices.get(j/2).y);
-        }else{
-          tr.setFloat(j + 4, -999);
-          tr.setFloat(j + 5, -999);
-        }
-      }
-      //for (int j : range(4, 24, 2)) {
-      //for (int j = 0; j < 20; j+= 2) {
-      //  if (j/2 < genes.get(i).vertices.size()) {
-      //    tr.setFloat(j + 3, genes.get(i).vertices.get(j/2).x);
-      //    tr.setFloat(j+1 + 3, genes.get(i).vertices.get(j/2).y);
-      //  } else {
-      //    tr.setFloat(j + 3, -9999);
-      //    tr.setFloat(j+1 + 3, -9999);
-      //  }
-      //}
-    }
-    Table infoTable = new Table(); 
-    infoTable.addColumn("Gen"); 
-    infoTable.addColumn("Genes Length"); 
-    TableRow tr; 
-    tr = infoTable.addRow(); 
-    tr.setInt(0, gen); 
-    tr.setInt(1, genes.size()); 
-
-    saveTable(infoTable, "info.csv"); 
+    saveTable(infoTable, "info.csv");
     saveTable(genesTable, "Genes.csv");
   }
 
 
-
   void loadDNA() {
-    Table genesTable = loadTable("Genes.csv"); 
-    Table infoTable = loadTable("info.csv"); 
-    TableRow tr = infoTable.getRow(1); 
-
-    gen = tr.getInt(0); 
-    INITIAL_GENES = tr.getInt(1); 
-
-    genes.clear(); 
-    for (int i : range(INITIAL_GENES)) {
-      TableRow tRow = genesTable.getRow(i); 
-      float[] data = new float[4]; 
-      ArrayList<Vertex> vertices = new ArrayList<Vertex>(); 
-
-      for (int j : range(4)) {
-        data[j] = tr.getFloat(j);
-      }
-
-      for (int j : range(4, genes.get(0).MAX_VERT * 2, 2)) {
-        if (tRow.getFloat(j) != -9999) {
-          vertices.add(new Vertex(tRow.getFloat(j), tRow.getFloat(j+1)));
-        }
-      }
-      genes.add(new Gene(data, vertices));
-    }
+    Table genesTable = loadTable("Genes.csv");
+    Table infoTable = loadTable("info.csv");
+    TableRow tr = infoTable.getRow(1);
+    
+    gen = tr.getInt(0);
+    INITIAL_GENES = tr.getInt(1);
+    
+    genes.clear();
+    
     updateCanvas();
   }
-
-
+  
 
   DNA clone() {
     return new DNA(this);
