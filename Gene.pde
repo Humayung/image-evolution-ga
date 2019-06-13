@@ -61,10 +61,10 @@ class Gene {
       h = constrain(h + randomGaussian(), 0, 20);
       break;
     case 1:
-      x = constrain(x + randomGaussian() * 5, 0, size[0]);
-      y = constrain(y + randomGaussian() * 5, 0, size[1]);
+      x = constrain(x + randomGaussian(), 0, size[0]);
+      y = constrain(y + randomGaussian(), 0, size[1]);
     case 2:
-      c = color(constrain(red(c) + randomGaussian() * 5, 0, 255), constrain(green(c) + randomGaussian() * 5, 0, 255), constrain(blue(c) + randomGaussian() * 5, 0, 255));
+      c = color(constrain(red(c) + randomGaussian(), 0, 255), constrain(green(c) + randomGaussian(), 0, 255), constrain(blue(c) + randomGaussian(), 0, 255));
       break;
     case 3:
       type = floor(random(2));

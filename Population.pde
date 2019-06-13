@@ -8,19 +8,42 @@ class Population {
   Population(int size) {
     this.popSize = size;
     dnas = new DNA[popSize];
-    for (int i : range(popSize)) {
-      dnas[i] = new DNA();
+    try {  
+      DNA parent = new DNA();
+      parent.loadDNA();
+      bestEverDNA = parent.clone();
+      parent.calcError(image);
+      bestEver = parent.error;   
+      createGeneration(parent);
+    }
+    catch(Exception e) {
+      println("No saveData!");
+
+      for (int i : range(popSize)) {
+        dnas[i] = new DNA();
+      }
     }
   }
 
+
   void nextGeneration() {
     DNA parent = bestDna();
+    parent.saveDNA();
     println("Generation       : " + gen);
     println("    Error        : " + parent.error);
     println("    Genes Length : " + parent.genes.size());
     //println(parent.error);
     DNA[] newDnas = new DNA[popSize];
-    for(int i : range(popSize)){
+    for (int i : range(popSize)) {
+      newDnas[i] = parent.clone();
+      newDnas[i].mutate(MUTATION_RATE);
+    }
+    dnas = newDnas.clone();
+  }
+
+  void createGeneration(DNA parent) {
+    DNA[] newDnas = new DNA[popSize];
+    for (int i : range(popSize)) {
       newDnas[i] = parent.clone();
       newDnas[i].mutate(MUTATION_RATE);
     }
@@ -44,7 +67,7 @@ class Population {
     }
     return best.clone();
   }
-  
+
   //DNA bestDna() {
   //  calcError(); 
   //  float maxError = 0; 
@@ -61,8 +84,8 @@ class Population {
   //  }
   //  return best.clone();
   //}
-  
-  
+
+
   void calcError() {
     for (DNA d : dnas) {
       d.calcError(image);

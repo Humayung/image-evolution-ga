@@ -9,8 +9,9 @@ void setup() {
   textSize(20);
   fullScreen();
 
-  image = loadImage("/home/cornoblue/Pictures/reference.jpg");
-  image.resize(image.width/3, image.height/3);
+  image = loadImage("/home/cornoblue/Pictures/reference.png");
+  image.resize(150, 150);
+  //image.resize(image.width/3, image.height/3);
   //image = createGraphics(100, 100);
   //image.beginDraw();
   //image.background(0);
@@ -27,6 +28,7 @@ void draw() {
   if (gen % 5 ==0) {
     show();
   }
+  
   //println(pop.bestEver + " - " + gen + " - " + pop.mean());
 }
 
@@ -37,7 +39,7 @@ void show() {
   text("Generation  : " + gen, image.width*2, 20);
   text("Error       : " + pop.bestEver, image.width*2, 40);
   text("Genes Length: " + pop.bestEverDNA.genes.size(), image.width*2, 60);
-  pop.bestEverDNA.show(image.width, 0);
+  pop.bestEverDNA.show(image.width, 0);  
   int index = 0;
   for (int x : range(0, width, image.width)) {
     for (int y : range(image.height, height, image.height)) {
