@@ -98,6 +98,7 @@ class DNA {
     genesTable.addColumn("w");
     genesTable.addColumn("h");
     genesTable.addColumn("r");
+    genesTable.addColumn("alpha");
     genesTable.addColumn("type");
     for (int i : range(genes.size())) {
       TableRow tr = genesTable.addRow();
@@ -107,7 +108,8 @@ class DNA {
       tr.setFloat(3, genes.get(i).w);
       tr.setFloat(4, genes.get(i).h);
       tr.setFloat(5, genes.get(i).r);
-      tr.setInt(6, genes.get(i).type);
+      tr.setFloat(6, genes.get(i).alpha);
+      tr.setInt(7, genes.get(i).type);
     }
     Table infoTable = new Table();
     infoTable.addColumn("Gen");
@@ -139,9 +141,10 @@ class DNA {
       float w = tRow.getFloat(3);
       float h = tRow.getFloat(4);
       float r = tRow.getFloat(5);
-      int type = tRow.getInt(6);
+      float alpha = tRow.getFloat(6);
+      int type = tRow.getInt(7);
       
-      genes.add(new Gene(x, y, c, w, h,r, type));
+      genes.add(new Gene(x, y, c, w, h,r,alpha, type));
     }
     updateCanvas();
   }

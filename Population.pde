@@ -2,6 +2,7 @@ class Population {
   float bestEver = Float.POSITIVE_INFINITY;
   final float MUTATION_RATE = 0.02;
   DNA bestEverDNA = null;
+  float prevScore;
   long total = 0;
   DNA[] dnas; 
   int popSize;
@@ -63,6 +64,7 @@ class Population {
     }
     if (best.error < bestEver) {
       bestEverDNA = best.clone();
+      prevScore = bestEver;
       bestEver = best.error;
     }
     return best.clone();

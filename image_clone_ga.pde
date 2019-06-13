@@ -25,10 +25,13 @@ void draw() {
   //println(floor(random(3)));  
   pop.nextGeneration();
   gen++;
+  if (pop.prevScore != pop.bestEver) {
+    pop.bestEverDNA.canvas.save("results/best" + gen + ".png");
+  }
   if (gen % 5 ==0) {
     show();
   }
-  
+
   //println(pop.bestEver + " - " + gen + " - " + pop.mean());
 }
 
@@ -40,6 +43,7 @@ void show() {
   text("Error       : " + pop.bestEver, image.width*2, 40);
   text("Genes Length: " + pop.bestEverDNA.genes.size(), image.width*2, 60);
   pop.bestEverDNA.show(image.width, 0);  
+
   int index = 0;
   for (int x : range(0, width, image.width)) {
     for (int y : range(image.height, height, image.height)) {
