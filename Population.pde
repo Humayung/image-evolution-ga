@@ -1,10 +1,10 @@
 class Population {
   float bestEver = Float.POSITIVE_INFINITY;
-  final float MUTATION_RATE = 0.02;
+  final float MUTATION_RATE = 0.03;
   DNA bestEverDNA = null;
   float prevScore;
   float bestError;
-  long total = 0;
+  float deltaError;
   DNA[] dnas; 
   int popSize;
   Population(int size) {
@@ -31,12 +31,14 @@ class Population {
     if (gen % 5 == 0) {
       parent.saveDNA();
     }
+    deltaError = prevScore - bestEverDNA.error;
     println("Generation       : " + gen);
     println("    Error        : " + parent.error);
+    println("    Delta Error  : " + (prevScore - parent.error));
     println("    Genes Length : " + parent.genes.size());
-    //println(parent.error);
     DNA[] newDnas = new DNA[popSize];
-    for (int i : range(popSize)) {
+    newDnas[0] = bestEverDNA.clone(); 
+    for (int i : range(1, popSize)) {
       newDnas[i] = parent.clone();
       newDnas[i].mutate(MUTATION_RATE);
     }
@@ -61,35 +63,17 @@ class Population {
       if (d.error < minError) {
         best = d; 
         minError = best.error;
-        
       }
     }
+    prevScore = bestError;
     bestError = best.error;
+
     if (best.error < bestEver) {
       bestEverDNA = best.clone();
-      prevScore = bestEver;
       bestEver = best.error;
     }
     return best.clone();
   }
-
-  //DNA bestDna() {
-  //  calcError(); 
-  //  float maxError = 0; 
-  //  DNA best = null; 
-  //  for (DNA d : dnas) {
-  //    if (d.error > maxError) {
-  //      best = d; 
-  //      maxError = best.error;
-  //    }
-  //  }
-  //  if (best.error > bestEver) {
-  //    bestEverDNA = best.clone();
-  //    bestEver = best.error;
-  //  }
-  //  return best.clone();
-  //}
-
 
   void calcError() {
     for (DNA d : dnas) {
