@@ -7,8 +7,8 @@ class Gene {
     data[1] = random(size[1]);
 
     data[2] = color(random(255), random(255), random(255), random(255));
-    data[3] = random(1, 50);
-    data[4] = random(1, 50);
+    data[3] = random(1, 40);
+    data[4] = random(1, 40);
 
     data[5] = random(TWO_PI);
     data[6] = floor(random(2));
@@ -34,19 +34,21 @@ class Gene {
     int param = floor(random(5));
     switch(param) {      
     case 0:
-      data[0] = constrain(data[0] + randomGaussian()*3, 0, size[0]);
-      data[1] = constrain(data[1] + randomGaussian()*3, 0, size[1]);
+      float shift = ((size[0] * size[1])/5500);
+      data[0] = constrain(data[0] + randomGaussian()*shift, 0, size[0]);
+      data[1] = constrain(data[1] + randomGaussian()*shift, 0, size[1]);
       break;
     case 1:      
       int c = int(data[2]);
-      int red = int(constrain(red(c) + randomGaussian() * 4, 0, 255));
-      int green = int(constrain(green(c) + randomGaussian() * 4, 0, 255));
-      int blue = int(constrain(blue(c) + randomGaussian() * 4, 0, 255));
-      int alpha = int(constrain(alpha(c) + randomGaussian() * 4, 0, 255));
+      int red = int(constrain(red(c) + randomGaussian() * 15, 0, 255));
+      int green = int(constrain(green(c) + randomGaussian() * 15, 0, 255));
+      int blue = int(constrain(blue(c) + randomGaussian() * 15, 0, 255));
+      int alpha = int(constrain(alpha(c) + randomGaussian() * 15, 0, 255));
       data[2] = color(red, green, blue, alpha);
     case 2:
-      data[3] = constrain(data[3] + randomGaussian()*3, 1, 50);
-      data[4] = constrain(data[4] + randomGaussian()*3, 1, 50);
+      shift = ((size[0] * size[1])/12000);
+      data[3] = constrain(data[3] + randomGaussian()*shift, 1, 40);
+      data[4] = constrain(data[4] + randomGaussian()*shift, 1, 40);
       break;
     case 3:
       data[6] = floor(random(2));
@@ -54,11 +56,11 @@ class Gene {
     case 4:
       data[5] = constrain(data[5] + randomGaussian(), 0, TWO_PI);
       break;
+    }
   }
-}
 
 
-Gene clone() {
-  return new Gene(this.data);
-}
+  Gene clone() {
+    return new Gene(this.data);
+  }
 } 

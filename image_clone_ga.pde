@@ -29,7 +29,7 @@ void draw() {
   pop.nextGeneration();
   gen++;
   //if (pop.prevScore != pop.bestEver) {
-    pop.bestEverDNA.canvas.save("results/" + gen + ".png");
+    saveFrame("results/best" + gen + ".png");
   //}
   show();
   pop.bestEverDNA.canvas.save("best.png");
