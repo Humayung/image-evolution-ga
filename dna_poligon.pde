@@ -1,3 +1,4 @@
+//int MAX_POLIGON  = 6;
 //class DNA {
 //  int INITIAL_GENES = 0;
 //  final int MAX_GENES = 200;
@@ -106,17 +107,18 @@
 //    for (int i : range(4)) {
 //      genesTable.addColumn(Integer.toString(i));
 //    }
-//    for (int i : range(0, 20, 2)) {
+//    for (int i : range(0, MAX_POLIGON * 2, 2)) {
 //      genesTable.addColumn(Integer.toString(i + 4));
 //      genesTable.addColumn(Integer.toString(i+1 + 4));
 //    }
 //    for (int i : range(genes.size())) {
+//      genes.get(i).shrinkifyData();
 //      TableRow currRow = genesTable.addRow();
 //      for (int j : range(4)) {
 //        currRow.setFloat(j, genes.get(i).data[j]);
 //      }      
 
-//      for (int j : range(0, 20, 2)) {
+//      for (int j : range(0, MAX_POLIGON * 2, 2)) {
 //        Gene g = genes.get(i);
 //        if (j/2 < g.vertices.size()) {
 //          currRow.setFloat(j + 4, g.vertices.get(j/2).x);
@@ -150,7 +152,7 @@
 //      }
 
 //      ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-//      for (int j : range(0, 20, 2)) {
+//      for (int j : range(0, MAX_POLIGON * 2, 2)) {
 //        float x = currRow.getFloat(j + 4);
 //        float y = currRow.getFloat(j+ 5);
 //        if (int(x) != 99 ) {

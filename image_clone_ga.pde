@@ -5,14 +5,14 @@ int popSize = 100;
 int[] size = new int[2];
 //PGraphics image;
 Population pop;
-double MAX_ERROR;
+float MAX_ERROR;
 void setup() {
   //textSize(20);
   //fullScreen();
-  size(360, 640);
+  size(1000, 500);
 
-  image = loadImage("/home/cornoblue/Pictures/captain_america_shield.jpg");
-  image.resize(floor(image.width/1.3), floor(image.height/1.3));
+  image = loadImage("/home/cornoblue/Pictures/reference.png");
+  image.resize(floor(image.width/2), floor(image.height/2));
   MAX_ERROR = image.width * image.height * (255 *3); 
   //image = createGraphics(100, 100);
   //image.beginDraw();
@@ -37,15 +37,16 @@ void draw() {
 
 void show() {
   background(255);
-  image(image, 17, 0) ;
-  pop.bestEverDNA.show(17, image.height); 
-  fill(0);
-  pushMatrix();
-  translate(0, image.height - 30);
-  text("Generation  : " + gen, 0, 20);
-  text("Error       : " + pop.bestEver, 0, 40);
-  text("Genes Length: " + pop.bestEverDNA.genes.size(), 0, 60);
-  popMatrix();
+  image(image, 0, 0) ;
+  pop.bestEverDNA.show(image.width, 0); 
+  //fill(0);
+  //pushMatrix();
+  //translate(0, image.height - 30);
+  //text("Generation  : " + gen, 0, 20);
+  //float percentage = pop.bestEver/MAX_ERROR * 100;
+  //text("Error       : " + percentage + "%", 0, 40);
+  //text("Genes Length: " + pop.bestEverDNA.genes.size(), 0, 60);
+  //popMatrix();
   
   //text("Generation  : " + gen, 0, 20);
   //text("Error       : " + pop.bestEver, 0, 40);

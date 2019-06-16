@@ -30,7 +30,7 @@ class DNA {
   void calcError(PImage target) {
     target.loadPixels();   
     canvas.loadPixels();
-    
+
     error = 0;
     float rErr = 0;
     float gErr = 0;
@@ -49,15 +49,19 @@ class DNA {
         g.mutate();
       }
     }
-    if (random(1) < ADD_GENE_CHANCE) {
-      genes.add(new Gene());
-    }
-    if (random(1) < REM_GENE_CHANCE && genes.size() > 0) {
-      genes.remove(floor(random(genes.size())));
+
+    int num = floor(random(10));
+    for (int i : range(num)) {
+      if (random(1) < ADD_GENE_CHANCE) {
+        genes.add(new Gene());
+      }
+      if (random(1) < REM_GENE_CHANCE && genes.size() > 0) {
+        genes.remove(floor(random(genes.size())));
+      }
     }
     updateCanvas();
   }
-  
+
   void updateCanvas() {
     canvas.beginDraw(); 
     canvas.noStroke();
@@ -65,7 +69,6 @@ class DNA {
     for (Gene g : genes) { 
       g.paint(canvas);
     }
-    //println("Gene fitness: " + geneFitness); 
     canvas.endDraw();
   }
 
@@ -76,7 +79,7 @@ class DNA {
     }
     for (int i : range(genes.size())) {
       TableRow tr = genesTable.addRow();
-      for (int j : range(7)) {
+      for (int j : range(7)) {      
         tr.setFloat(j, genes.get(i).data[j]);
       }
     }

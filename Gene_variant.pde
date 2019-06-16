@@ -32,21 +32,22 @@ class Gene {
 
   void mutate() {
     int param = floor(random(5));
+    float shift;
     switch(param) {      
     case 0:
-      float shift = ((size[0] * size[1])/5500);
+      shift = 50;
       data[0] = constrain(data[0] + randomGaussian()*shift, 0, size[0]);
       data[1] = constrain(data[1] + randomGaussian()*shift, 0, size[1]);
       break;
     case 1:      
       int c = int(data[2]);
-      int red = int(constrain(red(c) + randomGaussian() * 15, 0, 255));
-      int green = int(constrain(green(c) + randomGaussian() * 15, 0, 255));
-      int blue = int(constrain(blue(c) + randomGaussian() * 15, 0, 255));
-      int alpha = int(constrain(alpha(c) + randomGaussian() * 15, 0, 255));
+      int red = int(constrain(red(c) + randomGaussian() * 20, 0, 255));
+      int green = int(constrain(green(c) + randomGaussian() * 20, 0, 255));
+      int blue = int(constrain(blue(c) + randomGaussian() * 20, 0, 255));
+      int alpha = int(constrain(alpha(c) + randomGaussian() * 20, 0, 255));
       data[2] = color(red, green, blue, alpha);
     case 2:
-      shift = ((size[0] * size[1])/12000);
+      shift = 10;
       data[3] = constrain(data[3] + randomGaussian()*shift, 1, 40);
       data[4] = constrain(data[4] + randomGaussian()*shift, 1, 40);
       break;
