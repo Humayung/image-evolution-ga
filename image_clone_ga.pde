@@ -1,65 +1,94 @@
 DNA dna;
-PImage image;
+PImage target;
 //PGraphics image;
-int popSize = 100;
+import java.util.concurrent.TimeUnit;
+int popSize = 80;
 int[] size = new int[2];
-//PGraphics image;
+
+int peakDeltaError = 0;
+
 Population pop;
 float MAX_ERROR;
+long timeElapsed = 0;
 void setup() {
-  //textSize(20);
-  //fullScreen();
-  size(1000, 500);
 
-  image = loadImage("/home/cornoblue/Pictures/reference.png");
-  image.resize(floor(image.width/2), floor(image.height/2));
-  MAX_ERROR = image.width * image.height * (255 *3); 
-  //image = createGraphics(100, 100);
-  //image.beginDraw();
-  //image.noStroke();
-  //image.background(255);
-  //image.fill(255, 100, 50);
-  //image.ellipse(50, 50, 50, 50);
-  //image.endDraw();
-  size[0] = image.width;
-  size[1] = image.height;
+  size(1000, 620);
+  target = loadImage("reference.png");
+  target.resize(floor(target.width/2), floor(target.height/2));
+  target.loadPixels();
+  MAX_ERROR = target.width * target.height * (255 *3); 
+  size[0] = target.width;
+  size[1] = target.height;
   pop = new Population(popSize);
 }
 void draw() {  
+  long start = millis();
   pop.nextGeneration();
-  gen++;
-  //if (pop.prevScore != pop.bestEver) {
-    saveFrame("results/best" + gen + ".png");
-  //}
-  show();
+  displayGen();
+  timeElapsed += millis() - start;
+}
+
+void nextGeneration() {
+  pop.nextGeneration();
+}
+
+
+void displayGen() {
+  background(0);
+  fill(255);
+  textSize(100);
+  textAlign(LEFT, BOTTOM);
+  //image(image, 0, 0) ;
+  pop.bestEverDNA.show(0, 0);
+  float percentage = pop.bestEver/MAX_ERROR * 100;
+  percentage = floor(percentage * 1000) / 1000.0;
+  text(percentage + "%", 10, target.height + 120);
+  int cols = target.width/5;
+  int rows = target.height/5;
+
+  for (int i : range(0, target.width, cols)) {
+    for (int j : range(0, target.height, rows)) {
+      int index = i/cols + j/rows * target.width/cols;
+      pushMatrix();
+      translate(i + target.width, j);
+      scale(1/5.0);
+      pop.dnas[index].show(0, 0);
+      popMatrix();
+    }
+  }
+  fill(255);
+  pushMatrix();
+  textAlign(LEFT);
+  textSize(15);
+  translate(width - 250, target.height);
+  text("Generation     : " + pop.gen, 0, 15);
+  text("Error              : " + int(pop.bestEver), 0, 35);
+  int deltaError = int(pop.prevError - pop.bestEver);
+  if(deltaError > 10000000) deltaError = 0;
+  if(deltaError > peakDeltaError && deltaError < 10000){
+    peakDeltaError = deltaError;
+  }
+  
+  text("Delta Error     : " + deltaError, 0, 55);
+  text("Circles           : " + pop.bestEverDNA.genes.size(), 0, 75);
+  text("Mutation Rate: " + pop.MUTATION_RATE *100 + "%", 0, 95);
+  text("Time Elapsed : " + timeFormat(timeElapsed), 0, 115);
+  popMatrix();
+
+  saveFrame("results/best" + pop.gen + ".png");
+  pop.bestEverDNA.showMutated(0, 0);
   pop.bestEverDNA.canvas.save("best.png");
 }
 
-void show() {
-  background(255);
-  image(image, 0, 0) ;
-  pop.bestEverDNA.show(image.width, 0); 
-  //fill(0);
-  //pushMatrix();
-  //translate(0, image.height - 30);
-  //text("Generation  : " + gen, 0, 20);
-  //float percentage = pop.bestEver/MAX_ERROR * 100;
-  //text("Error       : " + percentage + "%", 0, 40);
-  //text("Genes Length: " + pop.bestEverDNA.genes.size(), 0, 60);
-  //popMatrix();
-  
-  //text("Generation  : " + gen, 0, 20);
-  //text("Error       : " + pop.bestEver, 0, 40);
-  //text("Delta Error : " + (pop.prevScore - pop.bestEver), 0, 60);
-  //text("Genes Length: " + pop.bestEverDNA.genes.size(), 0, 80);
-  //text("Pop Size    : " + pop.popSize, 0, 100);
+String timeFormat(long millis) {
+  long days = TimeUnit.MILLISECONDS.toDays(millis);
+  millis -= TimeUnit.DAYS.toMillis(days);
+  long hours = TimeUnit.MILLISECONDS.toHours(millis);
+  millis -= TimeUnit.HOURS.toMillis(hours);
+  long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+  millis -= TimeUnit.MINUTES.toMillis(minutes);
+  long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-  //int index = 0;
-  //for (int x : range(0, width, image.width)) {
-  //  for (int y : range(image.height, height, image.height)) {
-  //    pop.dnas[index].show(x, y);
-  //    index++;
-  //  }
-  //}
+  String format = days + "d " + hours + "h "+ minutes + "m " + seconds + "s "; 
+  return format;
 }
-int gen = 0;

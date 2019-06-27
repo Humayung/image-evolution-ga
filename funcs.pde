@@ -1,9 +1,9 @@
-int[] range(float from, float to, float step) {
+int[] range(int from, int to, int step) {
   try {
-    int[] range = new int[floor(abs((to - from)/step))];
+    int[] range = new int[(to - from)/step];
 
     for (int i = 0; i < range.length; i++) {
-      range[i] = floor(from + i * step);
+      range[i] = from + i * step;
     }
     return range;
   }
@@ -13,10 +13,10 @@ int[] range(float from, float to, float step) {
   return null;
 }
 
-int[] range(float from, float to) {
+int[] range(int from, int to) {
   return (range(from, to, 1));
 }
 
-int[] range(float to) {
+int[] range(int to) {
   return (range(0, to, 1));
 }
