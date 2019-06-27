@@ -7,4 +7,6 @@ Create a random population at first
 * Mutate new organism
 * Put the parent to the generation to maintain the population movement
 * Repeat the process
+
+
 ![Best](https://github.com/Humayung/image-evolution-ga/blob/master/best.png)
